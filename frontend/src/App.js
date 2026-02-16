@@ -1,13 +1,15 @@
 import { PipelineToolbar } from './toolbar';
 import { PipelineUI } from './ui';
-import { SubmitButton } from './submit';
+import { PipelineActions } from './PipelineActions';
+import { ResultsModal } from './ResultsModal';
 
 function App() {
   return (
     <div>
       <PipelineToolbar />
+      <PipelineActions />
       <PipelineUI />
-      <SubmitButton />
+      <ResultsModal />
     </div>
   );
 }

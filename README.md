@@ -11,8 +11,11 @@ A visual pipeline builder for AI and data workflows. Design node-based pipelines
 - **Visual pipeline editor** — Drag-and-drop nodes onto a canvas
 - **9 node types** — Input, LLM, Output, Text, Note, Filter, Database, Auth, Logger
 - **Connection validation** — Backend validates pipeline as a DAG (Directed Acyclic Graph)
+- **Export/Import** — Save pipelines as JSON, load from file
+- **Pipeline templates** — Pre-built examples (Simple LLM, Data Pipeline, Auth Flow)
+- **Results modal** — Clean validation results instead of browser alerts
+- **Docker deployment** — One-command run with `docker-compose up`
 - **Modern stack** — React 18, ReactFlow, Zustand, FastAPI, Pydantic
-- **Hot reload** — Development servers support live reload for both frontend and backend
 
 ---
 
@@ -22,7 +25,7 @@ A visual pipeline builder for AI and data workflows. Design node-based pipelines
 ┌─────────────────────────────────────────────────────────────┐
 │                     Frontend (React)                         │
 │  ┌──────────────┐  ┌──────────────┐  ┌──────────────────┐   │
-│  │   Toolbar    │  │  Canvas UI   │  │  Submit Button   │   │
+│  │   Toolbar    │  │  Canvas UI   │  │ Pipeline Actions │   │
 │  │  (drag nodes)│  │  (ReactFlow) │  │  (parse pipeline)│   │
 │  └──────────────┘  └──────────────┘  └──────────────────┘   │
 │                           │                                  │
@@ -96,11 +99,25 @@ npm start
 
 ---
 
+## Docker (one-command run)
+
+```bash
+docker-compose up --build
+```
+
+- **App:** [http://localhost](http://localhost) (port 80)
+- **Backend API:** [http://localhost:8000](http://localhost:8000)
+
+---
+
 ## Usage
 
 1. **Add nodes** — Drag node types from the toolbar onto the canvas.
 2. **Connect nodes** — Drag from a node’s handle to another node’s handle.
-3. **Submit** — Click **Submit** to send the pipeline to the backend and see validation results (node count, edge count, DAG status).
+3. **Validate** — Click **Validate** to run DAG validation and see results in a modal.
+4. **Export** — Save your pipeline as a JSON file.
+5. **Import** — Load a pipeline from a previously exported JSON file.
+6. **Templates** — Click a template button to load a pre-built example pipeline.
 
 ---
 

@@ -4,6 +4,8 @@ import {addEdge,applyNodeChanges,applyEdgeChanges,MarkerType,} from 'reactflow';
 export const useStore = create((set, get) => ({
   nodes: [],
   edges: [],
+  nodeIDs: {},
+  result: null,
   getNodeID: (type) => {
     const newIDs = { ...get().nodeIDs };
     if (newIDs[type] === undefined) {
@@ -44,4 +46,8 @@ export const useStore = create((set, get) => ({
       }),
     });
   },
+  setNodes: (nodes) => set({ nodes }),
+  setEdges: (edges) => set({ edges }),
+  loadPipeline: (nodes, edges) => set({ nodes: nodes || [], edges: edges || [] }),
+  clearCanvas: () => set({ nodes: [], edges: [], nodeIDs: {} }),
 }));
