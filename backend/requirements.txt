@@ -1,0 +1,4 @@
+# FastAPI + Pydantic v2 stack (works well on Python 3.13)
+fastapi==0.115.6
+uvicorn[standard]==0.34.0
+pydantic==2.10.5
