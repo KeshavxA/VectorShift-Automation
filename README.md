@@ -212,6 +212,36 @@ Vector-Shift/
 
 ---
 
+---
+
+## Deploy to GitHub
+
+This project is ready to push to GitHub. To deploy to **VectorShift-Automation**:
+
+### 1. Create the repository on GitHub
+
+1. Go to [github.com/new](https://github.com/new)
+2. Set **Repository name** to `VectorShift-Automation`
+3. Choose **Public** (or Private)
+4. Do **not** initialize with a README (you already have one)
+5. Click **Create repository**
+
+### 2. Push your code
+
+If your GitHub username is different from `keshavsharma`, update the remote:
+
+```bash
+git remote set-url origin https://github.com/YOUR_USERNAME/VectorShift-Automation.git
+```
+
+Then push:
+
+```bash
+git push -u origin main
+```
+
+---
+
 ## License
 
 Private project.
