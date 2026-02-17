@@ -51,51 +51,113 @@ A visual pipeline builder for AI and data workflows. Design node-based pipelines
 
 ---
 
-## Quick Start
+## How to Run (Full Execution Steps)
 
-### 1. Clone or navigate to the project
+### Step 1: Open terminal and go to project folder
 
 ```bash
-cd Vector-Shift
+cd /path/to/Vector-Shift
 ```
 
-### 2. Backend setup
+Replace `/path/to/Vector-Shift` with your actual project path (e.g. `~/Desktop/Vector-Shift`).
+
+---
+
+### Step 2: Set up the backend
 
 ```bash
 cd backend
 python -m venv .venv
-source .venv/bin/activate   # On Windows: .venv\Scripts\activate
+source .venv/bin/activate
+```
+
+On **Windows (Command Prompt):**
+```bash
+.venv\Scripts\activate
+```
+
+On **Windows (PowerShell):**
+```bash
+.venv\Scripts\Activate.ps1
+```
+
+Install backend dependencies:
+
+```bash
 pip install -r requirements.txt
 ```
 
-### 3. Frontend setup
+---
+
+### Step 3: Set up the frontend
+
+Open a **new terminal** (keep the backend terminal open), then:
 
 ```bash
-cd frontend
+cd /path/to/Vector-Shift/frontend
 npm install
 ```
 
-### 4. Run the project
+---
 
-**Terminal 1 — Backend (port 8000):**
+### Step 4: Run the backend (Terminal 1)
+
+In the backend terminal (with `.venv` activated):
 
 ```bash
-cd backend
+cd /path/to/Vector-Shift/backend
 source .venv/bin/activate
 uvicorn main:app --reload --host 0.0.0.0 --port 8000
 ```
 
-**Terminal 2 — Frontend (port 3000):**
+Expected output:
+```
+INFO:     Uvicorn running on http://0.0.0.0:8000
+INFO:     Application startup complete.
+```
+
+**Backend runs on:** [http://localhost:8000](http://localhost:8000)
+
+---
+
+### Step 5: Run the frontend (Terminal 2)
+
+In a **second terminal**:
 
 ```bash
-cd frontend
+cd /path/to/Vector-Shift/frontend
 npm start
 ```
 
-### 5. Open in browser
+The frontend runs on **port 3000** by default. If port 3000 is in use, Create React App will prompt to use 3001 instead.
 
-- **App:** [http://localhost:3000](http://localhost:3000)
-- **API docs:** [http://localhost:8000/docs](http://localhost:8000/docs)
+Expected output:
+```
+Compiled successfully!
+You can now view frontend in the browser.
+  Local:            http://localhost:3000
+```
+
+**Frontend runs on:** [http://localhost:3000](http://localhost:3000)
+
+---
+
+### Step 6: Use the app
+
+1. Open **http://localhost:3000** in your browser.
+2. Drag nodes from the toolbar onto the canvas.
+3. Connect nodes and click **Validate** to run pipeline validation.
+
+**API docs:** [http://localhost:8000/docs](http://localhost:8000/docs)
+
+---
+
+### Ports summary
+
+| Service  | Port | URL                    |
+|----------|------|------------------------|
+| Frontend | 3000 | http://localhost:3000  |
+| Backend  | 8000 | http://localhost:8000  |
 
 ---
 
@@ -223,11 +285,9 @@ Vector-Shift/
 | Issue | Solution |
 |-------|----------|
 | `Request failed (Failed to fetch)` | Ensure backend is running on port 8000 |
-| Port 3000 or 8000 in use | Use different ports or stop the process |
+| `Address already in use` / Port 3000 or 8000 in use | Kill the process: `lsof -i :8000` then `kill <PID>`, or `kill $(lsof -t -i :8000)` |
 | CORS errors | Backend allows `http://localhost:3000` by default |
 | Watchpack EMFILE (too many open files) | Increase file descriptors: `ulimit -n 10240` (macOS/Linux) |
-
----
 
 ---
 
@@ -262,5 +322,3 @@ git push -u origin main
 ## License
 
 Private project.
-# VectorShift-Automation
-# VectorShift-Automation
