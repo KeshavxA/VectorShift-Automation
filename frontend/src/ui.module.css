@@ -28,3 +28,10 @@
 .backgroundPattern {
   opacity: 0.4;
 }
+
+@media (max-width: 768px) {
+  .canvasWrapper {
+    height: 60vh;
+    min-height: 300px;
+  }
+}

@@ -167,3 +167,10 @@ code {
   width: 12px;
   height: 12px;
 }
+
+
+@media (max-width: 768px) {
+  body {
+    font-size: 14px;
+  }
+}

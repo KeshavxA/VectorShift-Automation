@@ -11,3 +11,13 @@
   flex-wrap: wrap;
   gap: 12px;
 }
+
+@media (max-width: 768px) {
+  .toolbar {
+    padding: 12px;
+  }
+  .nodesContainer {
+    gap: 8px;
+    margin-top: 12px;
+  }
+}
