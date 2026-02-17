@@ -2,6 +2,20 @@
 
 A visual pipeline builder for AI and data workflows. Design node-based pipelines using a drag-and-drop canvas, connect nodes to define data flow, and validate pipeline structure via a FastAPI backend.
 
+## Table of Contents
+
+- [Features](#features)
+- [Architecture](#architecture)
+- [Prerequisites](#prerequisites)
+- [How to Run](#how-to-run-full-execution-steps)
+- [Docker](#docker-one-command-run)
+- [Usage](#usage)
+- [Node Types](#node-types)
+- [Project Structure](#project-structure)
+- [API](#api)
+- [Environment Variables](#environment-variables)
+- [Troubleshooting](#troubleshooting)
+
 ![Pipeline Builder](https://img.shields.io/badge/React-18.2-blue) ![FastAPI](https://img.shields.io/badge/FastAPI-0.115-green) ![ReactFlow](https://img.shields.io/badge/ReactFlow-11.8-purple)
 
 ---
@@ -253,9 +267,12 @@ Vector-Shift/
 
 ## Environment Variables
 
-| Variable           | Default                | Description               |
-|--------------------|------------------------|---------------------------|
-| `REACT_APP_API_BASE` | `http://localhost:8000` | Backend base URL for API  |
+Create a `.env` file from `frontend/env.example` for local overrides. **Never commit `.env`** (it's in `.gitignore`).
+
+| Variable             | Default                | Description                    |
+|----------------------|------------------------|--------------------------------|
+| `REACT_APP_API_BASE` | `http://localhost:8000`| Backend base URL for API calls |
+| `PORT`               | `3000`                 | Frontend dev server port       |
 
 ---
 
