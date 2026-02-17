@@ -8,6 +8,11 @@
   gap: 16px;
 }
 
+.actions .btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
 .buttons {
   display: flex;
   gap: 8px;
@@ -57,6 +62,8 @@
   align-items: center;
   gap: 8px;
   flex-wrap: wrap;
+  flex: 1;
+  min-width: 0;
 }
 
 .templatesLabel {

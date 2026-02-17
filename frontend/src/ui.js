@@ -1,4 +1,4 @@
-import { useState, useRef, useCallback } from 'react';
+import { useRef, useCallback, useEffect } from 'react';
 import ReactFlow, { Controls, Background, MiniMap } from 'reactflow';
 import { useStore } from './store';
 import { shallow } from 'zustand/shallow';
@@ -37,11 +37,13 @@ const selector = (state) => ({
   onNodesChange: state.onNodesChange,
   onEdgesChange: state.onEdgesChange,
   onConnect: state.onConnect,
+  setReactFlowInstance: state.setReactFlowInstance,
+  deleteSelectedNodes: state.deleteSelectedNodes,
+  reactFlowInstance: state.reactFlowInstance,
 });
 
 export const PipelineUI = () => {
     const reactFlowWrapper = useRef(null);
-    const [reactFlowInstance, setReactFlowInstance] = useState(null);
     const {
       nodes,
       edges,
@@ -49,8 +51,29 @@ export const PipelineUI = () => {
       addNode,
       onNodesChange,
       onEdgesChange,
-      onConnect
+      onConnect,
+      setReactFlowInstance,
+      deleteSelectedNodes,
+      reactFlowInstance,
     } = useStore(selector, shallow);
+
+    const onInit = useCallback(
+      (instance) => {
+        setReactFlowInstance(instance);
+      },
+      [setReactFlowInstance]
+    );
+
+    useEffect(() => {
+      const onKeyDown = (e) => {
+        if ((e.key === 'Delete' || e.key === 'Backspace') && !e.target.closest('input, textarea')) {
+          e.preventDefault();
+          deleteSelectedNodes();
+        }
+      };
+      window.addEventListener('keydown', onKeyDown);
+      return () => window.removeEventListener('keydown', onKeyDown);
+    }, [deleteSelectedNodes]);
 
     const getInitNodeData = (nodeID, type) => {
       let nodeData = { id: nodeID, nodeType: `${type}` };
@@ -70,6 +93,7 @@ export const PipelineUI = () => {
               return;
             }
       
+            if (!reactFlowInstance) return;
             const position = reactFlowInstance.project({
               x: event.clientX - reactFlowBounds.left,
               y: event.clientY - reactFlowBounds.top,
@@ -105,7 +129,7 @@ export const PipelineUI = () => {
                 onConnect={onConnect}
                 onDrop={onDrop}
                 onDragOver={onDragOver}
-                onInit={setReactFlowInstance}
+                onInit={onInit}
                 nodeTypes={nodeTypes}
                 proOptions={proOptions}
                 snapGrid={[gridSize, gridSize]}

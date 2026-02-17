@@ -1,6 +1,7 @@
 import { useRef } from 'react';
 import { useStore } from './store';
 import { pipelineTemplates } from './templates';
+import { PipelineStats } from './PipelineStats';
 import styles from './PipelineActions.module.css';
 
 const API_BASE = process.env.REACT_APP_API_BASE || 'http://localhost:8000';
@@ -8,7 +9,15 @@ const API_BASE = process.env.REACT_APP_API_BASE || 'http://localhost:8000';
 export const PipelineActions = () => {
   const fileInputRef = useRef(null);
 
-  const { nodes, edges, loadPipeline, clearCanvas } = useStore();
+  const {
+    nodes,
+    edges,
+    loadPipeline,
+    clearCanvas,
+    setIsValidationLoading,
+    reactFlowInstance,
+    isValidationLoading,
+  } = useStore();
 
   const handleExport = () => {
     const data = { nodes, edges, exportedAt: new Date().toISOString() };
@@ -54,6 +63,7 @@ export const PipelineActions = () => {
   };
 
   const handleSubmit = async () => {
+    setIsValidationLoading(true);
     try {
       const safeNodes = Array.isArray(nodes)
         ? nodes.map((n) => ({ id: n?.id, type: n?.type, position: n?.position, data: n?.data }))
@@ -89,14 +99,28 @@ export const PipelineActions = () => {
           open: true,
         },
       });
+    } finally {
+      setIsValidationLoading(false);
     }
+  };
+
+  const handleFitView = () => {
+    reactFlowInstance?.fitView?.({ padding: 0.2 });
   };
 
   return (
     <div className={styles.actions}>
       <div className={styles.buttons}>
-        <button className={styles.btn} onClick={handleSubmit} title="Validate pipeline">
-          ▶ Validate
+        <button
+          className={styles.btn}
+          onClick={handleSubmit}
+          disabled={isValidationLoading}
+          title="Validate pipeline"
+        >
+          {isValidationLoading ? '… Validating' : '▶ Validate'}
+        </button>
+        <button className={styles.btn} onClick={handleFitView} title="Fit all nodes in view">
+          ⊞ Fit
         </button>
         <button className={styles.btn} onClick={handleExport} title="Export as JSON">
           ↓ Export
@@ -128,6 +152,7 @@ export const PipelineActions = () => {
           </button>
         ))}
       </div>
+      <PipelineStats />
     </div>
   );
 };
