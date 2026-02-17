@@ -45,7 +45,6 @@ export const SubmitButton = () => {
                 `Is DAG: ${data.is_dag ? 'Yes' : 'No'}`
             );
         } catch (err) {
-            console.error('Submit error:', err);
             const errorMsg = err?.message || String(err);
             alert(
                 `Failed to parse pipeline: ${errorMsg}\n\n` +

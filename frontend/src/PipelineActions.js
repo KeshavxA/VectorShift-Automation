@@ -83,7 +83,6 @@ export const PipelineActions = () => {
         },
       });
     } catch (err) {
-      console.error('Submit error:', err);
       useStore.setState({
         result: {
           error: err?.message || String(err),
