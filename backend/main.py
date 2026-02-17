@@ -27,6 +27,19 @@ def read_root():
     return {'Ping': 'Pong'}
 
 
+@app.get('/health')
+def health_check():
+    """
+    Detailed health check for monitoring and load balancers.
+    Returns status, version info, and service name.
+    """
+    return {
+        'status': 'healthy',
+        'service': 'VectorShift API',
+        'version': '1.0',
+    }
+
+
 class Edge(BaseModel):
     source: str
     target: str
