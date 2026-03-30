@@ -43,109 +43,109 @@ const selector = (state) => ({
 });
 
 export const PipelineUI = () => {
-    const reactFlowWrapper = useRef(null);
-    const {
-      nodes,
-      edges,
-      getNodeID,
-      addNode,
-      onNodesChange,
-      onEdgesChange,
-      onConnect,
-      setReactFlowInstance,
-      deleteSelectedNodes,
-      reactFlowInstance,
-    } = useStore(selector, shallow);
+  const reactFlowWrapper = useRef(null);
+  const {
+    nodes,
+    edges,
+    getNodeID,
+    addNode,
+    onNodesChange,
+    onEdgesChange,
+    onConnect,
+    setReactFlowInstance,
+    deleteSelectedNodes,
+    reactFlowInstance,
+  } = useStore(selector, shallow);
 
-    const onInit = useCallback(
-      (instance) => {
-        setReactFlowInstance(instance);
-      },
-      [setReactFlowInstance]
-    );
+  const onInit = useCallback(
+    (instance) => {
+      setReactFlowInstance(instance);
+    },
+    [setReactFlowInstance]
+  );
 
-    useEffect(() => {
-      const onKeyDown = (e) => {
-        if ((e.key === 'Delete' || e.key === 'Backspace') && !e.target.closest('input, textarea')) {
-          e.preventDefault();
-          deleteSelectedNodes();
+  useEffect(() => {
+    const onKeyDown = (e) => {
+      if ((e.key === 'Delete' || e.key === 'Backspace') && !e.target.closest('input, textarea')) {
+        e.preventDefault();
+        deleteSelectedNodes();
+      }
+    };
+    window.addEventListener('keydown', onKeyDown);
+    return () => window.removeEventListener('keydown', onKeyDown);
+  }, [deleteSelectedNodes]);
+
+  const getInitNodeData = (nodeID, type) => {
+    let nodeData = { id: nodeID, nodeType: `${type}` };
+    return nodeData;
+  }
+
+  const onDrop = useCallback(
+    (event) => {
+      event.preventDefault();
+
+      const reactFlowBounds = reactFlowWrapper.current.getBoundingClientRect();
+      if (event?.dataTransfer?.getData('application/reactflow')) {
+        const appData = JSON.parse(event.dataTransfer.getData('application/reactflow'));
+        const type = appData?.nodeType;
+
+        if (typeof type === 'undefined' || !type) {
+          return;
         }
-      };
-      window.addEventListener('keydown', onKeyDown);
-      return () => window.removeEventListener('keydown', onKeyDown);
-    }, [deleteSelectedNodes]);
 
-    const getInitNodeData = (nodeID, type) => {
-      let nodeData = { id: nodeID, nodeType: `${type}` };
-      return nodeData;
-    }
+        if (!reactFlowInstance) return;
+        const position = reactFlowInstance.project({
+          x: event.clientX - reactFlowBounds.left,
+          y: event.clientY - reactFlowBounds.top,
+        });
 
-    const onDrop = useCallback(
-        (event) => {
-          event.preventDefault();
-    
-          const reactFlowBounds = reactFlowWrapper.current.getBoundingClientRect();
-          if (event?.dataTransfer?.getData('application/reactflow')) {
-            const appData = JSON.parse(event.dataTransfer.getData('application/reactflow'));
-            const type = appData?.nodeType;
-      
-            if (typeof type === 'undefined' || !type) {
-              return;
-            }
-      
-            if (!reactFlowInstance) return;
-            const position = reactFlowInstance.project({
-              x: event.clientX - reactFlowBounds.left,
-              y: event.clientY - reactFlowBounds.top,
-            });
+        const nodeID = getNodeID(type);
+        const newNode = {
+          id: nodeID,
+          type,
+          position,
+          data: getInitNodeData(nodeID, type),
+        };
 
-            const nodeID = getNodeID(type);
-            const newNode = {
-              id: nodeID,
-              type,
-              position,
-              data: getInitNodeData(nodeID, type),
-            };
-      
-            addNode(newNode);
-          }
-        },
-        [reactFlowInstance]
-    );
+        addNode(newNode);
+      }
+    },
+    [reactFlowInstance, addNode, getNodeID]
+  );
 
-    const onDragOver = useCallback((event) => {
-        event.preventDefault();
-        event.dataTransfer.dropEffect = 'move';
-    }, []);
+  const onDragOver = useCallback((event) => {
+    event.preventDefault();
+    event.dataTransfer.dropEffect = 'move';
+  }, []);
 
-    return (
-        <>
-        <div ref={reactFlowWrapper} className={uiStyles.canvasWrapper}>
-            <ReactFlow
-                nodes={nodes}
-                edges={edges}
-                onNodesChange={onNodesChange}
-                onEdgesChange={onEdgesChange}
-                onConnect={onConnect}
-                onDrop={onDrop}
-                onDragOver={onDragOver}
-                onInit={onInit}
-                nodeTypes={nodeTypes}
-                proOptions={proOptions}
-                snapGrid={[gridSize, gridSize]}
-                connectionLineType='smoothstep'
-                className={uiStyles.reactFlowContainer}
-            >
-                <Background 
-                    color="#b0bec5" 
-                    gap={gridSize} 
-                    size={1}
-                    className={uiStyles.backgroundPattern}
-                />
-                <Controls />
-                <MiniMap />
-            </ReactFlow>
-        </div>
-        </>
-    )
+  return (
+    <>
+      <div ref={reactFlowWrapper} className={uiStyles.canvasWrapper}>
+        <ReactFlow
+          nodes={nodes}
+          edges={edges}
+          onNodesChange={onNodesChange}
+          onEdgesChange={onEdgesChange}
+          onConnect={onConnect}
+          onDrop={onDrop}
+          onDragOver={onDragOver}
+          onInit={onInit}
+          nodeTypes={nodeTypes}
+          proOptions={proOptions}
+          snapGrid={[gridSize, gridSize]}
+          connectionLineType='smoothstep'
+          className={uiStyles.reactFlowContainer}
+        >
+          <Background
+            color="#b0bec5"
+            gap={gridSize}
+            size={1}
+            className={uiStyles.backgroundPattern}
+          />
+          <Controls />
+          <MiniMap />
+        </ReactFlow>
+      </div>
+    </>
+  )
 }

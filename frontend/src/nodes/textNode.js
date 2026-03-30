@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { BaseNode } from './baseNode';
 import styles from './baseNode.module.css';
 
@@ -27,23 +27,23 @@ export const TextNode = ({ id, data }) => {
     }));
   }, [id, variables]);
 
-  const recomputeSize = (nextText) => {
+  const recomputeSize = useCallback((nextText) => {
     const el = textareaRef.current;
-    let nextHeight = nodeSize.height;
+    let nextHeight = 120;
     if (el) {
       el.style.height = '0px';
-      const contentHeight = el.scrollHeight; 
+      const contentHeight = el.scrollHeight;
       nextHeight = Math.max(110, Math.min(320, contentHeight + 66));
       el.style.height = `${Math.max(60, Math.min(240, contentHeight))}px`;
     }
 
     const lines = (nextText || '').split('\n');
     const longest = lines.reduce((m, line) => Math.max(m, line.length), 0);
-    const approxPx = 120 + longest * 7; 
+    const approxPx = 120 + longest * 7;
     const nextWidth = Math.max(220, Math.min(480, approxPx));
 
     setNodeSize({ width: nextWidth, height: nextHeight });
-  };
+  }, []);
 
   const handleTextChange = (e) => {
     const next = e.target.value;
@@ -53,7 +53,7 @@ export const TextNode = ({ id, data }) => {
 
   useEffect(() => {
     recomputeSize(currText);
-  }, []);
+  }, [currText, recomputeSize]);
 
   return (
     <BaseNode
