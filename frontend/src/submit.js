@@ -1,6 +1,5 @@
 import { useStore } from './store';
-
-const API_BASE = process.env.REACT_APP_API_BASE || 'http://localhost:8000';
+import { getParseUrl } from './apiConfig';
 
 export const SubmitButton = () => {
     const onSubmit = async () => {
@@ -26,7 +25,7 @@ export const SubmitButton = () => {
                 }))
                 : [];
 
-            const res = await fetch(`${API_BASE}/pipelines/parse`, {
+            const res = await fetch(getParseUrl(), {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ nodes: safeNodes, edges: safeEdges }),

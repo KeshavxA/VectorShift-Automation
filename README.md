@@ -186,6 +186,24 @@ docker-compose up --build
 
 ---
 
+## Deploy on Vercel
+
+The **frontend** (including a serverless **Validate** API at `/api/parse`) deploys from the `frontend` folder.
+
+### Steps
+
+1. Push this repo to GitHub.
+2. Go to [vercel.com](https://vercel.com) → **Add New** → **Project** → import the repository.
+3. Set **Root Directory** to `frontend`.
+4. Framework Preset: **Create React App** (auto-detected). Build command: `npm run build`, output: `build`.
+5. Deploy. No extra env vars are required for the default setup (`frontend/.env.production` sets `REACT_APP_PARSE_URL=/api/parse`).
+
+After deploy, open your Vercel URL. **Validate** uses the Python function in `frontend/api/parse.py`. For full FastAPI (Swagger at `/docs`), run the backend separately (e.g. Render, Railway) and set **Environment Variable** in Vercel:
+
+- `REACT_APP_PARSE_URL` → remove or override with `https://your-backend.example.com/pipelines/parse`
+
+---
+
 ## Usage
 
 1. **Add nodes** — Drag node types from the toolbar onto the canvas.

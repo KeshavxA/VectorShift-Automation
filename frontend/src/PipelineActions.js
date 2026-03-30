@@ -2,9 +2,8 @@ import { useRef } from 'react';
 import { useStore } from './store';
 import { pipelineTemplates } from './templates';
 import { PipelineStats } from './PipelineStats';
+import { getParseUrl } from './apiConfig';
 import styles from './PipelineActions.module.css';
-
-const API_BASE = process.env.REACT_APP_API_BASE || 'http://localhost:8000';
 
 export const PipelineActions = () => {
   const fileInputRef = useRef(null);
@@ -72,7 +71,7 @@ export const PipelineActions = () => {
         ? edges.map((e) => ({ id: e?.id, source: e?.source, target: e?.target }))
         : [];
 
-      const res = await fetch(`${API_BASE}/pipelines/parse`, {
+      const res = await fetch(getParseUrl(), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ nodes: safeNodes, edges: safeEdges }),
